@@ -93,7 +93,7 @@ class WeiBo(object):
         proxies = {
             "https": "60.190.199.68:808"
         }
-        r = self.s.get(url, headers=self.headers, cookies=cookies, proxies=proxies)
+        r = self.s.get(url, headers=self.headers, cookies=cookies)
         if r.status_code == 200:
             print('登录成功')
             # print(r.text)
