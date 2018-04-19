@@ -1,12 +1,14 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-#
+#   微博登录方式2
 import requests
 import time
 from sqlalchemy.orm import sessionmaker
 
 
 class WeiBo(object):
+
+    login_success = False
 
     def __init__(self, username, password):
         self.s = requests.session()
@@ -57,6 +59,7 @@ class WeiBo(object):
         if r.json()['retcode'] == 20000000:
             print('登录成功')
             self.save_cookie(r.headers['Set-Cookie'])
+            login_success = True
             return r.headers['Set-Cookie']
         else:
             print(r.json())
@@ -81,22 +84,48 @@ class WeiBo(object):
 
     def verify_cookie(self):
 
-        cookies = self.get_cookie()
+        try:
+            cookies = self.get_cookie()
 
-        if cookies is None:
+            if cookies is None:
+                print('cookie过期或不存在')
+                cookies = ''
+            else:
+                print('cookie获取成功，正在尝试cookie登录')
+
+            url = 'https://m.weibo.cn'
+            proxies = {
+                "https": "https://114.245.152.189:8118"
+            }
+            r = self.s.get(url, headers=self.headers, cookies=cookies, proxies=proxies, timeout=5)
+            if r.status_code == 200:
+                print('登录成功')
+                # print(r.text)
+                login_success = True
+                return cookies
+            else:
+                print('cookie过期,正在尝试重新登录')
+                self.login()
+                cookies = self.get_cookie()
+                # print(cookies)
+                return cookies
+        except:
+            print("登录失败")
+            pass
+
+        try:
+            cookies = self.get_cookie()
+            print('cookie获取成功，正在尝试cookie登录')
+        except:
             print('cookie过期或不存在')
             cookies = ''
-        else:
-            print('cookie获取成功，正在尝试cookie登录')
-
         url = 'https://m.weibo.cn'
-        proxies = {
-            "https": "60.190.199.68:808"
-        }
+        # params = {'t': str(int(time.time()))}
         r = self.s.get(url, headers=self.headers, cookies=cookies)
         if r.status_code == 200:
             print('登录成功')
             # print(r.text)
+            login_success = True
             return cookies
         else:
             print('cookie过期,正在尝试重新登录')
@@ -104,55 +133,6 @@ class WeiBo(object):
             cookies = self.get_cookie()
             # print(cookies)
             return cookies
-
-        # try:
-        #     cookies = self.get_cookie()
-        #
-        #     if cookies is None:
-        #         print('cookie过期或不存在')
-        #         cookies = ''
-        #     else:
-        #         print('cookie获取成功，正在尝试cookie登录')
-        #
-        #     url = 'https://m.weibo.cn'
-        #     proxies = {
-        #         "https": "https://114.245.152.189:8118"
-        #     }
-        #     r = self.s.get(url, headers=self.headers, cookies=cookies, proxies=proxies, timeout=5)
-        #     if r.status_code == 200:
-        #         print('登录成功')
-        #         # print(r.text)
-        #         return cookies
-        #     else:
-        #         print('cookie过期,正在尝试重新登录')
-        #         self.login()
-        #         cookies = self.get_cookie()
-        #         # print(cookies)
-        #         return cookies
-        # except:
-        #     print("登录失败")
-        #     pass
-
-        # try:
-        #     cookies = self.get_cookie()
-        #     print('cookie获取成功，正在尝试cookie登录')
-        # except:
-        #     print('cookie过期或不存在')
-        #     cookies = ''
-        #     raise
-        # url = 'https://m.weibo.cn'
-        # # params = {'t': str(int(time.time()))}
-        # r = self.s.get(url, headers=self.headers, cookies=cookies)
-        # if r.status_code == 200:
-        #     print('登录成功')
-        #     # print(r.text)
-        #     return cookies
-        # else:
-        #     print('cookie过期,正在尝试重新登录')
-        #     self.login()
-        #     cookies = self.get_cookie()
-        #     # print(cookies)
-        #     return cookies
 
     def get_user_basic_info(self):
         url = "https://m.weibo.cn/home/me?format=cards"

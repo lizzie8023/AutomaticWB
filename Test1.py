@@ -1,7 +1,11 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
+# 微博登录方式1
 import requests
 import re
+
+
+
 class Weibo(object):
     '''
     新浪微博类
@@ -54,6 +58,26 @@ class Weibo(object):
             self.session.get(url)
         self.session.get("https://m.weibo.cn/")
 
+        self.save_cookie(self.session.cookies)
+
+        print(self.session.cookies)
+
+    def save_cookie(self, cookie):
+        with open('cookies/%s.txt' % self.username, 'w') as f:
+            f.write(cookie)
+        print('cookie保存成功')
+
+    def get_cookie(self):
+        try:
+            with open('cookies/%s.txt' % self.username, 'r') as f:
+                cookies = {}
+                for line in f.read().split(';'):
+                    name, value = line.strip().split('=', 1)  # 1代表只分割一次
+                    cookies[name] = value
+                return cookies
+        except:
+            return None
+
     def add_new(self, content):
         '''
         create a new weibo发布新微博方法
@@ -75,8 +99,6 @@ class Weibo(object):
         }
         respon = self.session.post(addurl, data, headers=headers).json()
         return respon.get("msg", "Unknow Error")  # 这里的msg是发布结果
-
-
 
 if __name__=='__main__':
     wb = Weibo(username="zezhi7751@sina.cn",password="hai456123")
