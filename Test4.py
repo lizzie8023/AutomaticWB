@@ -56,7 +56,7 @@ loginURL = r'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.15)
 s = requests.Session()
 username = '15377319847'
 password = 'meiyoumima'
-auth = "&source=" + '2517952414'
+auth = "&source=" + '4106825333'
 username = base64.b64encode(username.encode('utf-8').decode('utf-8'))
 post_data = {
         "entry": "sso",
