@@ -39,17 +39,17 @@
 #         self.password = password
 #         self.session = requests.session()
 
+import requests, json, base64, re, sys, time
 
-
-import configparser
-import sys
-import os
-import requests
-import json
-import re
-import base64
-from datetime import datetime
-import time
+# import configparser
+# import sys
+# import os
+# import requests
+# import json
+# import re
+# import base64
+# # from datetime import datetime
+# import time
 
 
 loginURL = r'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.15)'
