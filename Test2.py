@@ -279,9 +279,9 @@ class WeiBo(object):
 
 if __name__ == '__main__':
 
-
     username = "zezhi7751@sina.cn"
     password = "hai456123"
-    weibo = WeiBo(username=username, password=password)
-    weibo.original_weibo("#张杰#测试发微博啊啊啊啊啊啊1233333")
-    time.sleep(20)
+    while True:
+        weibo = WeiBo(username=username, password=password)
+        weibo.original_weibo("中兴今天破产没?中兴今天倒闭没?")
+        time.sleep(60 * 60 * 24)

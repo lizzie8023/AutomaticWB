@@ -56,7 +56,7 @@ loginURL = r'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.15)
 s = requests.Session()
 username = '15377319847'
 password = 'meiyoumima'
-auth = "&source=" + '4106825333'
+auth = "&source=" + '2517952414'
 username = base64.b64encode(username.encode('utf-8').decode('utf-8'))
 post_data = {
         "entry": "sso",
@@ -78,8 +78,8 @@ post_data = {
     }
 post_data['su'] = username
 post_data['sp'] = password
-re = s.post(loginURL, data=post_data)
-json_str = re.content.decode('gbk')
+response = s.post(loginURL, data=post_data)
+json_str = response.content.decode('gbk')
 info = json.loads(json_str)
 if info["retcode"] == "0":
     print(info)
@@ -89,10 +89,62 @@ if info["retcode"] == "0":
     cookies = "; ".join(cookies)
     s.headers["cookie"] = cookies
 
+
 else:
     print('登录失败')
     pass
 
+
+def get_st():
+    headers = {'Host': 'm.weibo.cn',
+               'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:56.0) Gecko/20100101 Firefox/56.0',
+               'Accept': 'application/json, text/plain, */*',
+               'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+               'Accept-Encoding': 'gzip, deflate',
+               'Referer': 'https://m.weibo.cn',
+               'X-Requested-With': 'XMLHttpRequest',
+               'Content-Type': 'application/x-www-form-urlencoded',
+               'Connection': 'close'}
+    url = "https://m.weibo.cn/api/config"
+    r = s.get(url, headers=headers, cookies=s.cookies)
+    data = r.json()
+    st = data["data"]["st"]
+
+    cookies = s.cookies.get_dict()
+    cookies = [key + "=" + value for key, value in cookies.items()]
+    cookies = "; ".join(cookies)
+    s.headers["cookie"] = cookies
+
+    return st
+
+def add_new(content):
+    '''
+    create a new weibo发布新微博方法
+    '''
+    addurl = "https://c.api.weibo.com/2/statuses/upload/biz.json"
+
+    st = get_st()
+
+    # r = s.get(r"http://m.weibo.cn/mblog").text
+    # st = re.findall(r'"st":"(\w+)"', r)
+    # 如果发送数据中有一些值为数字字母等混合的长得像随机数的参数，
+    # 建议可以在页面源代码里找找，然后用正则表达式提取出来。就像这里的st
+    data = {'content': content, 'st': st[0], }
+    headers = {  # headers也是必不可少的，否则会有什么安全问题导致发送失败
+        "Host": "m.weibo.cn",
+        "Connection": "keep-alive",
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "Origin": "http://m.weibo.cn",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "Referer": "http://m.weibo.cn/mblog",
+        "Accept-Language": "zh-CN,zh;q=0.8"
+    }
+    respon = s.post(addurl, data, headers=headers).json()
+    print respon.get("msg", "Unknow Error")  # 这里的msg是发布结果
+
+
+add_new("测试一下啊啊啊啊啊")
 
 # class WeiboUtil(object):
 #
@@ -442,3 +494,5 @@ else:
 #
 #     # 发一条带图片的微博，还没调试成功
 #     # 相关资料http://hbprotoss.github.io/posts/multipartform-datade-shi-xian.html
+
+

@@ -18,10 +18,6 @@ class Weibo(object):
         self.username = username
         self.password = password
         self.session = requests.Session()
-        # proxies = {
-        #     "https": "60.190.199.68:808"
-        # }
-        # self.session.proxies.update(proxies)
         self._login()
     def _login(self):
         #登录地址
