@@ -1,46 +1,39 @@
-#!/usr/bin/env python
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
-
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
 from weibo import APIClient
-import webbrowser  # python内置的包
-import requests
+import urllib2
+import urllib
 
-type = sys.getfilesystemencoding()
-APP_KEY = '2517952414'
-APP_SECRET = '1b5cbde6c1689409c9372c1b153e5a7e'
-CALLBACK_URL = 'http://dev.guanba.com/article/hot'
+#APP_KEY和APP_SECRET，需要新建一个微博应用才能得到
+APP_KEY = '4106825333' #写自己的
+APP_SECRET = '7dcd656bc3689ef845f810445aba2947'
+#管理中心---应用信息---高级信息，将"授权回调页"的值改成https://api.weibo.com/oauth2/default.html
+CALLBACK_URL = 'https://api.weibo.com/oauth2/default.html'
+AUTH_URL = 'https://api.weibo.com/oauth2/authorize'
 
-# 利用官方微博SDK
-client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
+def GetCode(userid,passwd):
+    client = APIClient(app_key = APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
+    referer_url = client.get_authorize_url()
+    postdata = {
+        "action": "login",
+        "client_id": APP_KEY,
+        "redirect_uri":CALLBACK_URL,
+        "userId": userid,
+        "passwd": passwd,
+        }
 
-vipClient = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL, domain='c.api.weibo.com')
-# 得到授权页面的url，利用webbrowser打开这个url
-url = client.get_authorize_url()
-# print url
-# webbrowser.open_new(url)
-# 获取code=后面的内容
-# print '输入url中code后面的内容后按回车键：'
-# code = raw_input()
-r = "2.00QBWS1Gi8E6kC9374805e8aKs49TE"
-# code = your.web.framework.request.get('code')
-# client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
-# r = client.request_access_token(code)
-# access_token = r.access_token # 新浪返回的token，类似abc123xyz456
-# expires_in = r.expires_in
-access_token = "2.00QBWS1Gi8E6kC9374805e8aKs49TE"
-expires_in = 36000
+    headers = {
+        "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0",
+        "Referer":referer_url,
+        "Connection":"keep-alive"
+    }
+    req  = urllib2.Request(
+        url = AUTH_URL,
+        data = urllib.urlencode(postdata),
+        headers = headers
+    )
+    resp = urllib2.urlopen(req)
+    return resp.geturl()[-32:]
 
-# 设置得到的access_token
-vipClient.set_access_token(access_token, expires_in)
-
-def weibo_post(text, imgs=[], url=False):
-    url_post_pic = "https://c.api.weibo.com/2/statuses/upload/biz.json"
-    utext = unicode(text.encode('utf-8'), 'UTF-8')
-    data = {'access_token': vipClient.access_token, 'status': utext}
-    r = requests.post(url_post_pic, data=data)
-    print(r)
-
-weibo_post('test')
+if __name__ == "__main__":
+    print GetCode('17165498565','123456a?')
