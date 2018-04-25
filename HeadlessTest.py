@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 
-import time, json
+import time, json, os
 from selenium import webdriver
 # from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 # import logging
@@ -30,7 +30,7 @@ myWeiBo = [
 
 def get_cookie_from_weibo_cn(account, password):
 
-    driver = webdriver.Chrome('/Users/Lizzie/Desktop/AutomaticWB/Linux/chromedriver', chrome_options=chrome_options)
+    driver = webdriver.Chrome(os.getcwd() + 'Linux/chromedriver', chrome_options=chrome_options)
     driver.get('https://weibo.cn/login/')
 
     time.sleep(1)
