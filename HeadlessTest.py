@@ -65,6 +65,8 @@ def get_cookie_from_weibo_cn(account, password):
             pass
 
         commit = driver.find_element_by_id('loginAction')
+        print driver.page_source
+        return
         commit.click()
         time.sleep(3)
         if u"我的首页" not in driver.title:
