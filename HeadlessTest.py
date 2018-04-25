@@ -30,7 +30,7 @@ myWeiBo = [
 
 def get_cookie_from_weibo_cn(account, password):
 
-    driver = webdriver.Chrome(os.getcwd() + 'Linux/chromedriver', chrome_options=chrome_options)
+    driver = webdriver.Chrome(os.getcwd() + '/Linux/chromedriver', chrome_options=chrome_options)
     driver.get('https://weibo.cn/login/')
 
     time.sleep(1)
