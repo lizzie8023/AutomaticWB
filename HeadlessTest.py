@@ -7,8 +7,6 @@ from selenium import webdriver
 # from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 # import logging
 from yundama import identify
-
-
 from selenium.webdriver.chrome.options import Options
 
 chrome_options = Options()
@@ -80,7 +78,6 @@ def get_cookie_from_weibo_cn(account, password):
         for elem in driver.get_cookies():
             cookie[elem["name"]] = elem["value"]
     return json.dumps(cookie)
-
 
 if __name__=='__main__':
     for weibo in myWeiBo:
