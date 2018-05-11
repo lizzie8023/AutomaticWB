@@ -69,8 +69,8 @@ def load_video_info(i):
         return None
 
 def load_videos_info():
-    # es = Elasticsearch(["http://114.215.128.188"],port=9200)
-    es = Elasticsearch(["http://10.29.168.134"], port=9200)
+    es = Elasticsearch(["http://114.215.128.188"],port=9200)
+    # es = Elasticsearch(["http://10.29.168.134"], port=9200)
     page = es.search(index="sampling_bilibili_target", doc_type="target", scroll='2m')
 
     sid = page['_scroll_id']
@@ -190,6 +190,8 @@ def load_videos_info():
                 if driver2 is None:
                     continue
                 try:
+                    aa = driver2.find_element(u'分享').text
+
                     play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
                     barrage_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[2]').text
                     exceptional_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[4]').text
