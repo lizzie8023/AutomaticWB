@@ -29,7 +29,7 @@ def log(content):
 path_temp = path.dirname(__file__)
 path_temp = path.dirname(path_temp)
 path_temp = path_temp + '/Linux/chromedriver'
-print(path_temp)
+path_temp = '/home/service/guanba-data/guanba-data-parser/test/AutomaticWB/Linux/chromedriver'
 
 def dele_es_doc():
     es = Elasticsearch(["http://114.215.128.188"], port=9200)
