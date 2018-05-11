@@ -113,7 +113,6 @@ def load_videos_info():
         time.sleep(2)
         driver.get(url)
         #********#
-        print(driver.page_source)
         more_btn = driver.find_element_by_xpath('//*[@id="page-index"]/div[1]/div[2]/h3/a[2]')
         more_btn.click()
         time.sleep(2)
@@ -126,7 +125,7 @@ def load_videos_info():
                 driver2 = load_video_info(i)
                 if driver2 is None:
                     continue
-
+                print(driver2.page_source)
                 play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
                 barrage_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[2]').text
                 exceptional_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[4]').text
