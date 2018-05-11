@@ -19,7 +19,7 @@ import requests
 chrome_options = Options()
 
 chrome_options.add_argument('--headless')
-chrome_options.add_argument('--disable-gpu')
+# chrome_options.add_argument('--disable-gpu')
 # chrome_options.add_argument('user-agent="Mozilla/5.0 (Linux; U; Android 2.3.6; en-us; Nexus S Build/GRK39F) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"')
 
 def log(content):
@@ -190,7 +190,6 @@ def load_videos_info():
                 if driver2 is None:
                     continue
                 try:
-                    aa = driver2.find_element(u'分享').text
 
                     play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
                     barrage_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[2]').text
@@ -269,7 +268,18 @@ def load_videos_info():
                 has_more = False
 
 
+def test():
+    url = 'https://www.bilibili.com/video/av19982324'
+    driver = webdriver.Chrome(path_temp, chrome_options=chrome_options)
+    driver.set_window_size(1680, 1050)
+    driver.get(url)
+
+    print(driver.page_source)
+    aa = driver.find_element(u'分享')
+
+    print(aa)
 # dele_es_doc()
-load_videos_info()
+# load_videos_info()
+test()
 exit()
 quit()
