@@ -28,7 +28,7 @@ def log(content):
 
 path_temp = path.dirname(__file__)
 path_temp = path.dirname(path_temp)
-path_temp = path_temp + '/Mac/chromedriver'
+path_temp = path_temp + '/Linux/chromedriver'
 
 def dele_es_doc():
     es = Elasticsearch(["http://114.215.128.188"], port=9200)
