@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 
-import time, json, re
+import time, json, re, os
 from os import path
 from urllib import quote
 from selenium import webdriver
@@ -26,10 +26,7 @@ def log(content):
     print(content)
 
 
-path_temp = path.dirname(__file__)
-path_temp = path.dirname(path_temp)
-path_temp = path_temp + '/Mac/chromedriver'
-# path_temp = '/home/service/guanba-data/guanba-data-parser/test/AutomaticWB/Linux/chromedriver'
+path_temp = os.getcwd() + '/Linux/chromedriver'
 
 def dele_es_doc():
     es = Elasticsearch(["http://114.215.128.188"], port=9200)
