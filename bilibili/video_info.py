@@ -68,7 +68,8 @@ def load_video_info(i):
         return None
 
 def load_videos_info():
-    es = Elasticsearch(["http://114.215.128.188"],port=9200)
+    # es = Elasticsearch(["http://114.215.128.188"],port=9200)
+    es = Elasticsearch(["http://10.29.168.134"], port=9200)
     page = es.search(index="sampling_bilibili_target", doc_type="target", scroll='2m')
 
     sid = page['_scroll_id']
@@ -91,14 +92,14 @@ def load_videos_info():
     # index = 0
     # for i in list_temp:
     #     print(i['_source']['account_name'])
-    #     if i['_source']['account_name'] == u'关晓彤全球后援会':
+    #     if i['_source']['account_name'] == u'吴磊的爱丽丝':
     #         index = total
     #         # break
     #     else:
     #         total = total + 1
     # print('总数:%d, 当前:%d'%(total,index))
     # return
-    list_temp = list_temp[251:int(list_temp.__len__())]
+    list_temp = list_temp[261:int(list_temp.__len__())]
     driver = webdriver.Chrome(path_temp, chrome_options=chrome_options)
     driver.set_window_size(1680, 1050)
 
