@@ -98,7 +98,7 @@ def load_videos_info():
     #         total = total + 1
     # print('总数:%d, 当前:%d'%(total,index))
     # return
-    list_temp = list_temp[261:int(list_temp.__len__())]
+    list_temp = list_temp[263:int(list_temp.__len__())]
     driver = webdriver.Chrome(path_temp, chrome_options=chrome_options)
     driver.set_window_size(1680, 1050)
 
