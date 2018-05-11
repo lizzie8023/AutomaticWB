@@ -21,7 +21,7 @@ chrome_options = Options()
 chrome_options.add_argument('--headless')
 # chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument('user-agent=""Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.0 Safari/532.5""')
+# chrome_options.add_argument('user-agent=""Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.0 Safari/532.5""')
 
 def log(content):
     print(content)
