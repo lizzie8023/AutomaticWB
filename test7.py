@@ -133,7 +133,7 @@ def load_videos_info():
                 driver2 = load_video_info(i)
                 if driver2 is None:
                     continue
-                print(driver2.page_source)
+                # print(driver2.page_source)
                 play_count = ''
                 barrage_count = ''
                 exceptional_count = ''
