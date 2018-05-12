@@ -115,7 +115,10 @@ def load_videos_info():
         try:
             driver.get(url)
         except:
-            driver.get(url)
+            try:
+                driver.get(url)
+            except:
+                return
 
         # ********#
         # more_btn = driver.find_element_by_xpath('//*[@id="page-index"]/div[1]/div[2]/h3/a[2]')
