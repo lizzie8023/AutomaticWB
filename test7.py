@@ -93,7 +93,7 @@ def load_videos_info():
             else:
                 pass
 
-    list_temp = list_temp[263:int(list_temp.__len__())]
+    list_temp = list_temp[280:int(list_temp.__len__())]
     driver = webdriver.Chrome(path_temp, chrome_options=chrome_options)
 
     def map_video(i):
