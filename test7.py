@@ -93,7 +93,7 @@ def load_videos_info():
             else:
                 pass
 
-    list_temp = list_temp[310:int(list_temp.__len__())]
+    list_temp = list_temp[280:int(list_temp.__len__())]
     driver = webdriver.Chrome(path_temp, chrome_options=chrome_options)
 
     def map_video(i):
@@ -118,36 +118,48 @@ def load_videos_info():
         try:
             more_btn = driver.find_element_by_xpath('//*[@id="page-index"]/div[1]/div[2]/h3/a[2]')
             more_btn.click()
+            time.sleep(3)
         except:
             driver.refresh()
             time.sleep(3)
             try:
                 more_btn = driver.find_element_by_xpath('//*[@id="page-index"]/div[1]/div[2]/h3/a[2]')
                 more_btn.click()
+                time.sleep(3)
+                driver.find_element_by_xpath('//div[@id="video-list-style"]')
             except:
                 print('刷新失败,无法找到更多按钮:%s'%url)
                 return
-        time.sleep(2)
-        try:
-            has_more = True
-            while has_more:
-                video_list = driver.find_element_by_xpath('//div[@id="video-list-style"]')
-                submit_video_list = video_list.find_elements_by_xpath(
-                    './/li[@class="list-item clearfix fakeDanmu-item"]')
-                for i in submit_video_list:
+        has_more = True
+        while has_more:
+            video_list = driver.find_element_by_xpath('//div[@id="video-list-style"]')
+            submit_video_list = video_list.find_elements_by_xpath('.//li[@class="list-item clearfix fakeDanmu-item"]')
+            for i in submit_video_list:
 
-                    driver2 = load_video_info(i)
-                    if driver2 is None:
-                        continue
-                    # print(driver2.page_source)
-                    play_count = ''
-                    barrage_count = ''
-                    exceptional_count = ''
-                    collection_count = ''
-                    share_count = ''
-                    video_title = ''
-                    video_publish_time = ''
+                driver2 = load_video_info(i)
+                if driver2 is None:
+                    continue
+                # print(driver2.page_source)
+                play_count = ''
+                barrage_count = ''
+                exceptional_count = ''
+                collection_count = ''
+                share_count = ''
+                video_title = ''
+                video_publish_time = ''
+                try:
+                    play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
+                    barrage_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[2]').text
+                    exceptional_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[4]').text
+                    collection_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[5]').text
+                    share_count = driver2.find_element_by_xpath('//*[@id="playpage_share"]/div[1]/span[2]').text
+                    video_title = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/h1/span').text
+                    video_publish_time = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[1]').text
+                except:
+                    driver2.refresh()
+                    time.sleep(3)
                     try:
+
                         play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
                         barrage_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[2]').text
                         exceptional_count = driver2.find_element_by_xpath(
@@ -158,64 +170,46 @@ def load_videos_info():
                         video_title = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/h1/span').text
                         video_publish_time = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[1]').text
                     except:
-                        driver2.refresh()
-                        time.sleep(3)
-                        try:
+                        print('详情页刷新失败,无法拿到数据')
+                        driver2.close()
+                        return
 
-                            play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
-                            barrage_count = driver2.find_element_by_xpath(
-                                '//*[@id="viewbox_report"]/div[2]/span[2]').text
-                            exceptional_count = driver2.find_element_by_xpath(
-                                '//*[@id="viewbox_report"]/div[2]/span[4]').text
-                            collection_count = driver2.find_element_by_xpath(
-                                '//*[@id="viewbox_report"]/div[2]/span[5]').text
-                            share_count = driver2.find_element_by_xpath('//*[@id="playpage_share"]/div[1]/span[2]').text
-                            video_title = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/h1/span').text
-                            video_publish_time = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[1]').text
-                        except:
-                            print('详情页刷新失败,无法拿到数据')
-                            driver2.close()
-                            return
-
-                    data_temp3 = {}
-                    if u'万' in play_count:
-                        play_count2 = re.findall(r'\d+\.?\d*', play_count)[0]
-                        data_temp3['play_count'] = str(int(float(play_count2) * 10000))
-                    else:
-                        data_temp3['play_count'] = play_count
-                    try:
-                        data_temp3['exceptional_count'] = exceptional_count.split(' ')[1]
-                        data_temp3['collection_count'] = collection_count.split(' ')[1]
-                    except:
-                        print('格式化失败:exceptional_count--->%s,collection_count--->%s' % (
-                        exceptional_count, collection_count))
-                        pass
-                    try:
-                        video_publish_time = str(
-                            re.findall(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2})", video_publish_time)[0])
-                    except:
-                        print('video_publish_time 格式化失败:%s' % video_publish_time)
-                        pass
-                    data_temp3['barrage_count'] = barrage_count
-                    data_temp3['share_count'] = share_count
-                    data_temp3['account_name'] = account_name
-                    data_temp3['target_name'] = target_name
-                    data_temp3['video_title'] = video_title
-                    data_temp3['video_publish_time'] = video_publish_time
-                    save_target_account(es, data_temp3)
-                    driver2.close()
-
+                data_temp3 = {}
+                if u'万' in play_count:
+                    play_count2 = re.findall(r'\d+\.?\d*', play_count)[0]
+                    data_temp3['play_count'] = str(int(float(play_count2) * 10000))
+                else:
+                    data_temp3['play_count'] = play_count
                 try:
-                    button = video_list.find_element_by_xpath('.//li[@class="be-pager-next"]')
-                    button.click()
-                    time.sleep(2)
+                    data_temp3['exceptional_count'] = exceptional_count.split(' ')[1]
+                    data_temp3['collection_count'] = collection_count.split(' ')[1]
                 except:
-                    # data = {'target_name':name,'accounts':accounts}
-                    # save_target_account(es,data)
-                    print('没有下一页')
-                    has_more = False
-        except:
-            return
+                    print('格式化失败:exceptional_count--->%s,collection_count--->%s'%(exceptional_count,collection_count))
+                    pass
+                try:
+                    video_publish_time = str(
+                        re.findall(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2})", video_publish_time)[0])
+                except:
+                    print('video_publish_time 格式化失败:%s'%video_publish_time)
+                    pass
+                data_temp3['barrage_count'] = barrage_count
+                data_temp3['share_count'] = share_count
+                data_temp3['account_name'] = account_name
+                data_temp3['target_name'] = target_name
+                data_temp3['video_title'] = video_title
+                data_temp3['video_publish_time'] = video_publish_time
+                save_target_account(es,data_temp3)
+                driver2.close()
+
+            try:
+                button = video_list.find_element_by_xpath('.//li[@class="be-pager-next"]')
+                button.click()
+                time.sleep(2)
+            except:
+                # data = {'target_name':name,'accounts':accounts}
+                # save_target_account(es,data)
+                print('没有下一页')
+                has_more = False
 
 
     for i in list_temp:
