@@ -101,15 +101,19 @@ def load_videos_info():
         account_name = i['_source']['account_name']
         target_name = i['_source']['target_name']
         print(i['_source']['account_name'])
-        try:
-            driver.get(url)
-        except:
+        loding_success = True
+        try_count = 0
+        while loding_success :
             try:
                 driver.get(url)
+                time.sleep(3)
             except:
-                print('网络超时:%s'%url)
-                return
-        time.sleep(3)
+                if try_count == 5:
+                    loding_success = False
+                    print('网络超时:%s' % url)
+                    break
+                try_count = try_count + 1
+                continue
         # ********#
         try:
             more_btn = driver.find_element_by_xpath('//*[@id="page-index"]/div[1]/div[2]/h3/a[2]')
