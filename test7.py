@@ -48,7 +48,9 @@ def dele_es_doc():
         data_temp1 = page['hits']['hits']
         for i in data_temp1:
             list_temp.append(i)
-    arr = []
+    arr = ['aBENRGMBDpL1bZP6BL2u','oxEORGMBDpL1bZP6uL8O','7BEIRGMBDpL1bZP68bdM','BBENRGMBDpL1bZP6hL6z',
+           'LRELRGMBDpL1bZP6VLuP','GhEIRGMBDpL1bZP6Nre6','IxEJRGMBDpL1bZP6yLlY','9BEKRGMBDpL1bZP6ebkp',
+           '7hEJRGMBDpL1bZP6m7jN','dBEPRGMBDpL1bZP6T8Ad']
     for i in list_temp:
         index = i['_id']
         url = 'http://114.215.128.188:9200/sampling_bilibili_video/video/' + index
