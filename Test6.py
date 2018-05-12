@@ -111,7 +111,6 @@ def load_videos_info():
         target_name = i['_source']['target_name']
         print(i['_source']['account_name'])
         time.sleep(2)
-        driver.set_page_load_timeout(5)
         try:
             driver.get(url)
         except:
@@ -121,7 +120,7 @@ def load_videos_info():
                 return
 
         # ********#
-        print(driver.page_source)
+
         more_btn = driver.find_element_by_xpath('//*[@id="page-index"]/div[1]/div[2]/h3/a[2]')
         more_btn.click()
         time.sleep(2)
