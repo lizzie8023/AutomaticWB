@@ -174,12 +174,19 @@ def load_videos_info():
                     data_temp3['play_count'] = str(int(float(play_count2) * 10000))
                 else:
                     data_temp3['play_count'] = play_count
-                print(video_publish_time)
-                video_publish_time = str(re.findall(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2})", video_publish_time)[0])
-
+                try:
+                    data_temp3['exceptional_count'] = exceptional_count.split(' ')[1]
+                    data_temp3['collection_count'] = collection_count.split(' ')[1]
+                except:
+                    print('格式化失败:exceptional_count--->%s,collection_count--->%s'%(exceptional_count,collection_count))
+                    pass
+                try:
+                    video_publish_time = str(
+                        re.findall(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2})", video_publish_time)[0])
+                except:
+                    print('video_publish_time 格式化失败:%s'%video_publish_time)
+                    pass
                 data_temp3['barrage_count'] = barrage_count
-                data_temp3['exceptional_count'] = exceptional_count.split(' ')[1]
-                data_temp3['collection_count'] = collection_count.split(' ')[1]
                 data_temp3['share_count'] = share_count
                 data_temp3['account_name'] = account_name
                 data_temp3['target_name'] = target_name
