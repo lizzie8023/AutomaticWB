@@ -34,7 +34,7 @@ path_temp = os.getcwd() + '/Linux/chromedriver'
 
 
 def dele_es_doc():
-    es = Elasticsearch(["http://114.215.128.188"], port=9200)
+    es = Elasticsearch(["http://10.29.168.134"], port=9200)
     page = es.search(index="sampling_bilibili_video", doc_type="video", scroll='2m')
 
     sid = page['_scroll_id']
@@ -216,7 +216,7 @@ def load_videos_info():
         map_video(i)
 
 
-# dele_es_doc()
-load_videos_info()
+dele_es_doc()
+# load_videos_info()
 exit()
 quit()
