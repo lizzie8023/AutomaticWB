@@ -100,19 +100,21 @@ def load_videos_info():
     # return
     list_temp = list_temp[263:int(list_temp.__len__())]
     driver = webdriver.Chrome(path_temp, chrome_options=chrome_options)
-    driver.set_window_size(1680, 1050)
+    # driver.set_window_size(1680, 1050)
 
     def save_target_account(data):
         print es.index(index="sampling_bilibili_video", doc_type="video", body=data)
 
-    for i in list_temp:
+    def map_video(i):
         url = i['_source']['link_url']
         account_name = i['_source']['account_name']
         target_name = i['_source']['target_name']
         print(i['_source']['account_name'])
         time.sleep(2)
+        driver.set_page_load_timeout(5)
         driver.get(url)
-        #********#
+
+        # ********#
         # more_btn = driver.find_element_by_xpath('//*[@id="page-index"]/div[1]/div[2]/h3/a[2]')
         # more_btn.click()
         # time.sleep(2)
@@ -165,7 +167,7 @@ def load_videos_info():
         #         print('没有下一页')
         #         has_more = False
         # return
-        #********#
+        # ********#
         try:
             more_btn = driver.find_element_by_xpath('//*[@id="page-index"]/div[1]/div[2]/h3/a[2]')
             more_btn.click()
@@ -177,7 +179,7 @@ def load_videos_info():
                 more_btn.click()
                 time.sleep(2)
             except:
-                continue
+                return
         has_more = True
         while has_more:
             video_list = driver.find_element_by_xpath('//div[@id="video-list-style"]')
@@ -186,7 +188,7 @@ def load_videos_info():
 
                 driver2 = load_video_info(i)
                 if driver2 is None:
-                    continue
+                    return
                 try:
                     play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
                     barrage_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[2]').text
@@ -203,7 +205,8 @@ def load_videos_info():
                     else:
                         data_temp3['play_count'] = play_count
 
-                    video_publish_time = str(re.findall(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2})", video_publish_time)[0])
+                    video_publish_time = str(
+                        re.findall(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2})", video_publish_time)[0])
 
                     data_temp3['barrage_count'] = barrage_count
                     data_temp3['exceptional_count'] = exceptional_count.split(' ')[1]
@@ -253,7 +256,7 @@ def load_videos_info():
                             driver2.close()
                         except:
                             pass
-                        continue
+                        return
             try:
                 button = video_list.find_element_by_xpath('.//li[@class="be-pager-next"]')
                 button.click()
@@ -263,6 +266,12 @@ def load_videos_info():
                 # save_target_account(es,data)
                 print('没有下一页')
                 has_more = False
+
+    for i in list_temp:
+        try:
+            map_video(i)
+        except:
+            map_video(i)
 
 
 # dele_es_doc()

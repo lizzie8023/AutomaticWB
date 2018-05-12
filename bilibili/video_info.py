@@ -89,17 +89,17 @@ def load_videos_info():
             else:
                 pass
 
-    # total = 0
-    # index = 0
-    # for i in list_temp:
-    #     print(i['_source']['account_name'])
-    #     if i['_source']['account_name'] == u'吴磊的爱丽丝':
-    #         index = total
-    #         # break
-    #     else:
-    #         total = total + 1
-    # print('总数:%d, 当前:%d'%(total,index))
-    # return
+    total = 0
+    index = 0
+    for i in list_temp:
+        print(i['_source']['account_name'])
+        if i['_source']['account_name'] == u'吴磊的爱丽丝':
+            index = total
+            # break
+        else:
+            total = total + 1
+    print('总数:%d, 当前:%d'%(total,index))
+    return
     list_temp = list_temp[261:int(list_temp.__len__())]
     driver = webdriver.Chrome(path_temp, chrome_options=chrome_options)
     driver.set_window_size(1680, 1050)
