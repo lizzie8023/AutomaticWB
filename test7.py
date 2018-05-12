@@ -134,9 +134,14 @@ def load_videos_info():
                 if driver2 is None:
                     continue
                 # print(driver2.page_source)
-
-                play_count, barrage_count, exceptional_count, collection_count, share_count, video_title,video_publish_time = ''
-                def load_text():
+                play_count = ''
+                barrage_count = ''
+                exceptional_count = ''
+                collection_count = ''
+                share_count = ''
+                video_title = ''
+                video_publish_time = ''
+                try:
                     play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
                     barrage_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[2]').text
                     exceptional_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[4]').text
@@ -144,22 +149,20 @@ def load_videos_info():
                     share_count = driver2.find_element_by_xpath('//*[@id="playpage_share"]/div[1]/span[2]').text
                     video_title = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/h1/span').text
                     video_publish_time = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[1]').text
-
-                    return play_count,\
-                           barrage_count,\
-                           exceptional_count, \
-                           collection_count, \
-                           share_count, \
-                           video_title, \
-                           video_publish_time
-
-                try:
-                    play_count, barrage_count, exceptional_count, collection_count, share_count, video_title, video_publish_time = load_text()
                 except:
                     driver2.refresh()
                     time.sleep(3)
                     try:
-                        play_count, barrage_count, exceptional_count, collection_count, share_count, video_title, video_publish_time = load_text()
+
+                        play_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[1]').text
+                        barrage_count = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[2]/span[2]').text
+                        exceptional_count = driver2.find_element_by_xpath(
+                            '//*[@id="viewbox_report"]/div[2]/span[4]').text
+                        collection_count = driver2.find_element_by_xpath(
+                            '//*[@id="viewbox_report"]/div[2]/span[5]').text
+                        share_count = driver2.find_element_by_xpath('//*[@id="playpage_share"]/div[1]/span[2]').text
+                        video_title = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/h1/span').text
+                        video_publish_time = driver2.find_element_by_xpath('//*[@id="viewbox_report"]/div[1]').text
                     except:
                         print('详情页刷新失败,无法拿到数据')
                         driver2.close()
