@@ -104,8 +104,7 @@ def load_videos_info():
                                 data_temp['target_name'] = target_name
                                 data_temp['video_title'] = i['title']
                                 data_temp['video_publish_time'] = i['ctime']
-                                # save_target_account(es,data_temp)
-                                print(data_temp)
+                                save_target_account(es,data_temp)
                             time.sleep(1)
                     else:
                         has_more = False
