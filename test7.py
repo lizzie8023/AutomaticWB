@@ -167,7 +167,7 @@ def load_videos_info():
                     data_temp3['play_count'] = str(int(float(play_count2) * 10000))
                 else:
                     data_temp3['play_count'] = play_count
-
+                print(video_publish_time)
                 video_publish_time = str(
                     re.findall(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2})", video_publish_time)[0])
 
